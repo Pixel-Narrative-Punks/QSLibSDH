@@ -21,9 +21,15 @@
 	static int qspEndiannessTestValue = 1;
 
 	#ifdef _UNICODE
-		typedef wchar_t QSP_CHAR;
-		#define QSP_FMT2(x) L##x
-		#define QSP_FMT(x) QSP_FMT2(x)
+		#ifdef _WIN32
+			typedef wchar_t QSP_CHAR;
+			#define QSP_FMT2(x) L##x
+			#define QSP_FMT(x) QSP_FMT2(x)
+		#else
+			typedef unsigned short QSP_CHAR;
+			#define QSP_FMT2(x) u##x
+			#define QSP_FMT(x) QSP_FMT2(x)
+		#endif
 
 		#define QSP_STRCOLL qspStrsComp
 		#define QSP_CHRLWR qspToWLower
@@ -134,16 +140,22 @@
 	QSLIBSDH_EXTERN QSP_BOOL QSPExecLocationCode(const QSP_CHAR *name, QSP_BOOL isRefresh);
 	QSLIBSDH_EXTERN void QSPGetLastErrorData(int *errorNum, QSP_CHAR **errorLoc, int *errorActIndex, int *errorLine);
 	QSLIBSDH_EXTERN const QSP_CHAR *QSPGetErrorDesc(int errorNum);
+	QSLIBSDH_EXTERN QSP_BOOL QSPLoadGameWorldFromFile(const QSP_CHAR *file);
 	QSLIBSDH_EXTERN QSP_BOOL QSPLoadGameWorld(const QSP_CHAR *file);
 	QSLIBSDH_EXTERN QSP_BOOL QSPLoadGameWorldFromData(const char *data, int dataSize, const QSP_CHAR *file);
+	QSLIBSDH_EXTERN QSP_BOOL QSPSaveGameAsFile(const QSP_CHAR *file, QSP_BOOL isRefresh);
 	QSLIBSDH_EXTERN QSP_BOOL QSPSaveGame(const QSP_CHAR *file, QSP_BOOL isRefresh);
+	QSLIBSDH_EXTERN QSP_BOOL QSPSaveGameAsData(QSP_CHAR *strBuf, int strBufSize, int *realSize, QSP_BOOL isRefresh);
 	QSLIBSDH_EXTERN QSP_BOOL QSPSaveGameAsString(QSP_CHAR *strBuf, int strBufSize, int *realSize, QSP_BOOL isRefresh);
+	QSLIBSDH_EXTERN QSP_BOOL QSPOpenSavedGameFromFile(const QSP_CHAR *file, QSP_BOOL isRefresh);
 	QSLIBSDH_EXTERN QSP_BOOL QSPOpenSavedGame(const QSP_CHAR *file, QSP_BOOL isRefresh);
+	QSLIBSDH_EXTERN QSP_BOOL QSPOpenSavedGameFromData(const QSP_CHAR *str, QSP_BOOL isRefresh);
 	QSLIBSDH_EXTERN QSP_BOOL QSPOpenSavedGameFromString(const QSP_CHAR *str, QSP_BOOL isRefresh);
 	QSLIBSDH_EXTERN QSP_BOOL QSPRestartGame(QSP_BOOL isRefresh);
 	QSLIBSDH_EXTERN void QSPSelectMenuItem(int ind);
 	QSLIBSDH_EXTERN void QSPSetCallBack(int type, QSP_CALLBACK func);
 	QSLIBSDH_EXTERN void QSPInit();
+	QSLIBSDH_EXTERN void QSPTerminate();
 	QSLIBSDH_EXTERN void QSPDeInit();
 
 	#ifdef __cplusplus

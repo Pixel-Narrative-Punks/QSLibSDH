@@ -118,19 +118,7 @@ void qspCallOpenQuest(QSP_CHAR* fileName, QSP_BOOL isAddLocs)
 	if (qspCallBacks[QSP_CALL_OPENGAME])
 	{
 		qspSaveCallState(&state, QSP_FALSE, QSP_FALSE);
-
-		// qspCallBacks[QSP_CALL_OPENGAME](fileName, isAddLocs);
-
-		FILE *f = QSP_FOPEN(fileName, QSP_FMT("rb"));
-		if (f == NULL)
-		{
-			return;
-		}
-
-		qspOpenQuestFromFILE(f, fileName, isAddLocs);
-
-		fclose(f);
-
+		qspCallBacks[QSP_CALL_OPENGAME](fileName, isAddLocs);
 		qspRestoreCallState(&state);
 	}
 }
